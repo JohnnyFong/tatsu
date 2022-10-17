@@ -20,7 +20,7 @@ export class TasksService {
 
   // METHOD 1 cronjob + queue
   // have cronjob to add tasks to queue, using queue will ensure not to hit rate limit (120 QPM)
-  // queue will have alot of jobs when there is many bookmark
+  // queue will have alot of jobs when there is too many bookmark
   // need redis setup
   @Cron(CronExpression.EVERY_30_SECONDS)
   async handleCronAddJob() {
@@ -84,7 +84,7 @@ export class TasksService {
           existingActivity.toJSON(),
         );
 
-        // remove duplicates by comparing
+        // remove duplicates by comparing res from MagicEden and our DB
         const newActivity = data.filter(
           (d) => !formattedList.find((f) => f.metadata == d.metadata),
         );
@@ -95,11 +95,13 @@ export class TasksService {
           newActivity.find((na) => na.metadata == i.metadata),
         );
 
-        // dispatch event
-        this.eventEmitter.emit('notification.create', {
-          tokenMint,
-          activityList: newInserted,
-        });
+        if (newInserted.length > 0) {
+          // if got new activity. dispatch event for notification
+          this.eventEmitter.emit('notification.create', {
+            tokenMint,
+            activityList: newInserted,
+          });
+        }
       }
     } catch (err) {
       console.log(`Bookmark ${tokenMint} is having error`, err);

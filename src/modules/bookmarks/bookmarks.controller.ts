@@ -28,10 +28,7 @@ export class BookmarksController {
   @UseGuards(AuthGuard('jwt'))
   @Get('own')
   async findOwn(@Request() req): Promise<BookmarkListResponse> {
-    // find the bookmark with this id
     const bookmark = await this.bookmarkService.findByUserId(req.user.id);
-
-    // if bookmark exist, return the bookmark
     return this.responseService.handleResponse(bookmark);
   }
 
@@ -60,9 +57,7 @@ export class BookmarksController {
     @Param('id') id: number,
     @Request() req,
   ): Promise<StandardResponse> {
-    // delete the bookmark with this id
     await this.bookmarkService.delete(id, req.user.id);
-    // return success message
     return this.responseService.handleResponse('Successfully deleted');
   }
 }

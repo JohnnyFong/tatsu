@@ -10,7 +10,6 @@ import {
 export class ValidateInputPipe extends ValidationPipe {
   public async transform(value, metadata: ArgumentMetadata) {
     try {
-      console.log(value);
       return await super.transform(value, metadata);
     } catch (e) {
       if (e instanceof BadRequestException) {

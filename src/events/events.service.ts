@@ -11,11 +11,14 @@ export class EventsService {
     private readonly notificationService: NotificationsService,
   ) {}
 
+  // handle notification event
   @OnEvent('notification.create')
   async handleNotificationCreate(payload: ActivityEvent) {
+    // find user that has bookmarked the tokenMint
     const userList = await this.bookmarkService.findUserByTokenMint(
       payload.tokenMint,
     );
+
     const data = userList.map((u) => {
       return payload.activityList.map((activity) => {
         return {
@@ -25,6 +28,10 @@ export class EventsService {
         };
       });
     });
+
+    // create notification
     await this.notificationService.bulkCreate(data.flat());
+    // TODO
+    // send notification to frontend using websocket or any pub sub cloud service for push notificaiton
   }
 }

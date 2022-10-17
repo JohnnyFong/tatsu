@@ -13,7 +13,7 @@ export class QueueService {
   }
 
   async getWaiting() {
-    return this.queue.getWaiting(0, 0);
+    return this.queue.getWaiting(0, 9); // get 10 from queue
   }
 
   async getWaitingCount() {
