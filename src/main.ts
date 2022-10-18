@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { ValidateInputPipe } from './pipes/validate.pipe';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
   // prefix
   app.setGlobalPrefix('api/v1');
   // validation
