@@ -16,6 +16,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { EventsModule } from './events/events.module';
 import { ResponseModule } from './utils/response/response.module';
 import { TokensModule } from './modules/tokens/tokens.module';
+import { MagicedenModule } from './modules/magiceden/magiceden.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { TokensModule } from './modules/tokens/tokens.module';
     EventsModule,
     ResponseModule,
     TokensModule,
+    MagicedenModule,
   ],
   controllers: [AppController],
   providers: [AppService],
