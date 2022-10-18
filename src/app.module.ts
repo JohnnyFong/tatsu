@@ -15,6 +15,7 @@ import { NotificationsModule } from './modules/notifications/notifications.modul
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { EventsModule } from './events/events.module';
 import { ResponseModule } from './utils/response/response.module';
+import { TokensModule } from './modules/tokens/tokens.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { ResponseModule } from './utils/response/response.module';
     }),
     EventsModule,
     ResponseModule,
+    TokensModule,
   ],
   controllers: [AppController],
   providers: [AppService],

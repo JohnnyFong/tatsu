@@ -1,9 +1,10 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Bookmark } from './bookmark.entity';
 import { BookmarkDto } from './dto/bookmark.dto';
-import { User } from '../users/user.entity';
 import { BOOKMARK_REPOSITORY } from '../../constants';
 import { Sequelize } from 'sequelize-typescript';
+import { Token } from '../tokens/token.entity';
+import { HasMany } from 'sequelize';
 
 @Injectable()
 export class BookmarksService {
@@ -27,8 +28,10 @@ export class BookmarksService {
     });
   }
 
-  async delete(id, userId) {
-    return await this.bookmarkRepository.destroy({ where: { id, userId } });
+  async delete(id: number, userId: number) {
+    return await this.bookmarkRepository.destroy({
+      where: { id, userId },
+    });
   }
 
   async findByUserId(userId: number): Promise<Bookmark[]> {
@@ -36,6 +39,15 @@ export class BookmarksService {
       where: {
         userId,
       },
+      include: [
+        {
+          model: Token,
+          association: new HasMany(Bookmark, Token, {
+            foreignKey: 'tokenMint',
+            sourceKey: 'tokenMint',
+          }),
+        },
+      ],
     });
   }
 

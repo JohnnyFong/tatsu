@@ -15,14 +15,16 @@ import { ResponseService } from 'src/utils/response/response.service';
 import {
   BookmarkListResponse,
   BookmarkResponse,
-} from './interfaces/bookamrk.interface';
+} from './interfaces/bookmark.interface';
 import { StandardResponse } from 'src/utils/response/response.interface';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Controller('bookmarks')
 export class BookmarksController {
   constructor(
     private readonly bookmarkService: BookmarksService,
     private responseService: ResponseService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   @UseGuards(AuthGuard('jwt'))
@@ -48,6 +50,9 @@ export class BookmarksController {
     }
     // create a new bookmark and return the newly created bookmark
     const res = await this.bookmarkService.create(bookmark, req.user.id);
+
+    // dispatch event to crawl tokenMInt from Magic Eden
+    this.eventEmitter.emit('token.create', bookmark.tokenMint);
     return this.responseService.handleResponse(res);
   }
 

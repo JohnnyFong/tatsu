@@ -5,6 +5,7 @@ import { databaseConfig } from './database.config';
 import { Bookmark } from 'src/modules/bookmarks/bookmark.entity';
 import { Activity } from 'src/modules/activities/activity.entity';
 import { Notification } from 'src/modules/notifications/notification.entity';
+import { Token } from 'src/modules/tokens/token.entity';
 
 export const databaseProviders = [
   {
@@ -25,7 +26,7 @@ export const databaseProviders = [
           config = databaseConfig.development;
       }
       const sequelize = new Sequelize(config);
-      sequelize.addModels([User, Bookmark, Activity, Notification]);
+      sequelize.addModels([User, Bookmark, Activity, Notification, Token]);
       await sequelize.sync();
       return sequelize;
     },
