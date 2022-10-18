@@ -10,7 +10,10 @@ import { AuthGuard } from '@nestjs/passport';
 import { StandardResponse } from 'src/utils/response/response.interface';
 import { ResponseService } from 'src/utils/response/response.service';
 import { BulkReadNotificationDto } from './dto/notification.dto';
-import { NotificationPaginationResponse } from './interfaces/notification.interface';
+import {
+  NotificationCountResponse,
+  NotificationPaginationResponse,
+} from './interfaces/notification.interface';
 import { NotificationsService } from './notifications.service';
 
 @Controller('notifications')
@@ -43,6 +46,13 @@ export class NotificationsController {
     };
 
     return this.responseService.handleResponse(data);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/own/unread')
+  async findUnreadCount(@Request() req): Promise<NotificationCountResponse> {
+    const data = await this.notificationService.findUnreadCount(req.user.id);
+    return this.responseService.handleResponse({ count: data });
   }
 
   @UseGuards(AuthGuard('jwt'))

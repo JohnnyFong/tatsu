@@ -10,3 +10,10 @@ export interface NotificationPaginationResponse {
     data: Notification[];
   };
 }
+
+export interface NotificationCountResponse {
+  meta: ResponseMeta;
+  data: {
+    count: number;
+  };
+}

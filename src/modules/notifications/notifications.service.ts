@@ -44,4 +44,13 @@ export class NotificationsService {
       },
     );
   }
+
+  async findUnreadCount(userId: number): Promise<number> {
+    return await this.notificationRepository.count({
+      where: {
+        userId,
+        read: false,
+      },
+    });
+  }
 }
